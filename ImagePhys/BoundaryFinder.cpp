@@ -1,37 +1,32 @@
 #include "BoundaryFinder.h"
+#include <map>
+#include <tuple>
 
 
-BoundaryFinder::BoundaryFinder(unsigned char* imgData, int width, int height)
+void BoundaryFinder::Init(unsigned char* imgData, int width, int height)
 {
 	this->imgData = imgData;
-}
-
-
-BoundaryFinder::~BoundaryFinder(void)
-{
+	this->width = width;
+	this->height = height;
 }
 
 bool BoundaryFinder::isOpaque(int x, int y)
 {
-
-}
-
-void BoundaryFinder::GetInitialPoints()
-{
-
+	unsigned char* alpha = imgData + (x + (y * width)) * 4 + 3;
+	return (*alpha > 2);
 }
 
 void BoundaryFinder::FindEdges()
 {
 	leftEdge = -1;
-	rightEdge = baseTex->Width;
+	rightEdge = width;
 	topEdge = -1;
-	bottomEdge = baseTex->Height;
+	bottomEdge = height;
 	bool edgeFound = false;
 	while (!edgeFound)
 	{		
 		++leftEdge;
-		for (int i = 0; i < baseTex->Height; ++i)
+		for (int i = 0; i < height; ++i)
 		{
 			if (isOpaque(leftEdge, i))
 			{
@@ -44,7 +39,7 @@ void BoundaryFinder::FindEdges()
 	while (!edgeFound)
 	{
 		--rightEdge;
-		for (int i = 0; i < baseTex->Height; ++i)
+		for (int i = 0; i < height; ++i)
 		{
 			if (isOpaque(rightEdge, i))
 			{
@@ -57,7 +52,7 @@ void BoundaryFinder::FindEdges()
 	while (!edgeFound)
 	{		
 		++topEdge;
-		for (int i = 0; i < baseTex->Width; ++i)
+		for (int i = 0; i < width; ++i)
 		{
 			if (isOpaque(i, topEdge))
 			{
@@ -70,7 +65,7 @@ void BoundaryFinder::FindEdges()
 	while (!edgeFound)
 	{
 		--bottomEdge;
-		for (int i = 0; i < baseTex->Width; ++i)
+		for (int i = 0; i < width; ++i)
 		{
 			if (isOpaque(i, bottomEdge))
 			{
@@ -81,3 +76,27 @@ void BoundaryFinder::FindEdges()
 	}
 }
 
+BoundaryFinder::~BoundaryFinder(void)
+{
+}
+
+void BoundaryFinder::GetInitialPoints()
+{
+	points.clear();
+	for (int i = topEdge; i <= bottomEdge; ++i)
+	{
+		int j = leftEdge;
+		while (!isOpaque(j, i))
+			++j;
+		points.emplace_back(j, i);
+	}
+
+	for (int i = bottomEdge; i >= topEdge; --i)
+	{
+		int j = rightEdge;
+		while (!isOpaque(j, i))
+			--j;
+		points.emplace_back(j, i);
+	}
+	
+}

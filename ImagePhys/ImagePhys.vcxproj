@@ -43,12 +43,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Margaret\Documents\Visual Studio 2012\Projects\Ogler\Ogler;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(LIBDIR)/Ogler/Ogler/;$(LIBDIR)/lua/lua/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Margaret\Documents\Visual Studio 2012\Projects\Ogler\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glew32sd.lib;GLFW_d.lib;Ogler_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(LIBDIR)/Ogler/$(Platform)/$(Configuration)/;$(LIBDIR)/lua/Debug/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32sd.lib;GLFW_d.lib;Ogler_d.lib;lua.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -66,13 +67,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoundaryFinder.cpp" />
+    <ClCompile Include="Decomposer.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Output.cpp" />
     <ClCompile Include="Reducer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BoundaryFinder.h" />
+    <ClInclude Include="Decomposer.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Output.h" />
     <ClInclude Include="Reducer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
